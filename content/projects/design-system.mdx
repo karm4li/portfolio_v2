@@ -1,0 +1,102 @@
+---
+title: "Design System"
+date: "2024-06-01"
+year: "2024"
+description: "A comprehensive design system and component library built to unify product experience across three platforms."
+tags: ["Design", "Engineering", "Systems"]
+status: "completed"
+role: "Lead Designer & Engineer"
+featured: true
+published: true
+links:
+  - label: "View on GitHub"
+    url: "https://github.com/yourusername/design-system"
+  - label: "Documentation"
+    url: "https://yourusername.github.io/design-system"
+research:
+  - label: "Design Tokens W3C Spec"
+    url: "https://design-tokens.github.io/community-group/format/"
+  - label: "Atomic Design — Brad Frost"
+    url: "https://atomicdesign.bradfrost.com"
+---
+
+<Section label="Overview">
+
+Every product eventually reaches a point where it has more interfaces than it has consistency. Buttons look slightly different across screens. Spacing follows different logics. Colors are close but not the same.
+
+This project was a response to that. A complete design system — tokens, components, documentation, and process — built to bring three separate products into alignment without stopping feature development.
+
+</Section>
+
+<Section label="The Problem">
+
+The team had grown from 4 engineers to 18 over 18 months. In that time, the codebase had grown accordingly — but without a shared language for visual decisions.
+
+The symptoms:
+- Four different button implementations across the codebase
+- Color values defined in 12 different files
+- No shared spacing scale
+- Component duplication between product teams
+
+<Callout type="insight">
+  The problem wasn't that people were making bad decisions. It was that there was no mechanism to make decisions once and propagate them everywhere.
+</Callout>
+
+The fix wasn't just visual — it was structural. We needed a system, not just a style guide.
+
+</Section>
+
+<Section label="Research & Approach">
+
+Before writing a line of code, I spent two weeks auditing the existing codebase and interviewing engineers on each product team. Key findings:
+
+- Teams valued autonomy and were resistant to top-down mandates
+- The biggest pain points were color, spacing, and typography — in that order
+- No one wanted a heavy component library with opinionated structure
+- Documentation was consistently cited as the biggest gap
+
+This shaped the approach: start with design tokens, provide components as optional, and invest heavily in documentation.
+
+</Section>
+
+<Section label="Process">
+
+**Phase 1 — Tokens (Weeks 1–3)**
+
+Built a complete token system: color (semantic + primitive), spacing (4px base scale), typography (size, weight, line-height), shadows, and border radii. Implemented using CSS custom properties with a build pipeline that outputs to CSS, JS, and Swift formats.
+
+**Phase 2 — Core Components (Weeks 4–8)**
+
+Built 22 core components in React, covering buttons, inputs, selects, modals, tooltips, and layout primitives. Each component:
+- Uses tokens exclusively (no hardcoded values)
+- Ships with comprehensive prop docs
+- Has accessibility baked in, not bolted on
+- Includes usage examples for common patterns
+
+**Phase 3 — Documentation (Weeks 9–11)**
+
+Shipped a documentation site built with Next.js. Every component page shows live examples, prop tables, design guidelines, and accessibility notes. Engineers can copy working code directly from the docs.
+
+**Phase 4 — Rollout (Ongoing)**
+
+Worked with each product team to adopt the system incrementally — no big-bang migration. Progress tracked per-component, per-team.
+
+</Section>
+
+<Section label="Outcomes">
+
+<Metrics>
+  <Metric value="22" label="Components" />
+  <Metric value="87%" label="Coverage" />
+  <Metric value="4.2×" label="Faster PR review" />
+</Metrics>
+
+Within six months of launch:
+- 87% of new UI code uses the design system
+- PR review time for UI changes dropped significantly
+- Zero new color values introduced outside the token system
+- Designer–engineer handoff process simplified substantially
+
+More importantly: the teams actually use it. That's the real metric.
+
+</Section>
