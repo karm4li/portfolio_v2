@@ -1,0 +1,86 @@
+---
+title: "ML Data Pipeline"
+date: "2023-10-15"
+year: "2023"
+description: "A real-time machine learning data pipeline capable of processing 50k events per second with sub-100ms latency."
+tags: ["ML", "Infrastructure", "Python"]
+status: "completed"
+role: "Engineering Lead"
+featured: true
+published: true
+links:
+  - label: "Case Study"
+    url: "https://example.com"
+research:
+  - label: "Kafka Documentation"
+    url: "https://kafka.apache.org/documentation/"
+  - label: "Feature Stores for ML — Feast"
+    url: "https://feast.dev"
+  - label: "Designing Data-Intensive Applications"
+    url: "https://dataintensive.net"
+publications:
+  - label: "Internal Tech Blog Post"
+    url: "https://example.com/blog/ml-pipeline"
+---
+
+<Section label="Overview">
+
+Machine learning models are only as good as the data they receive. When prediction latency is critical — think fraud detection, recommendation engines, real-time pricing — the data pipeline becomes the product.
+
+This project replaced a batch-oriented legacy system with a streaming architecture capable of serving fresh, feature-rich data to ML models in production.
+
+</Section>
+
+<Section label="The Problem">
+
+The existing system processed events in hourly batches. This meant:
+- Features were up to 60 minutes stale at prediction time
+- Model performance degraded significantly for time-sensitive predictions
+- The data engineering team spent 40% of their time on pipeline incidents
+
+<Callout type="insight">
+  A model trained on fresh data but served stale features is a model trained on lies. The training–serving skew was costing us more than any model improvement could recover.
+</Callout>
+
+The business impact was measurable — and bad enough that it justified a full infrastructure rebuild.
+
+</Section>
+
+<Section label="Architecture">
+
+The new system is built on three layers:
+
+**Ingestion** — Kafka-based event streaming with schema validation using Avro. Events flow from application services into topic partitions organized by entity type.
+
+**Feature computation** — Apache Flink jobs compute features in real time. Windowed aggregations (last N events, rolling sums, etc.) are computed incrementally as events arrive.
+
+**Feature serving** — Redis-backed feature store with a gRPC API. Models query features by entity ID with p99 latency under 8ms.
+
+</Section>
+
+<Section label="Process">
+
+The hardest part wasn't the technology — it was the migration.
+
+We couldn't afford a cutover. The existing system served production traffic, and a cold migration would have meant hours of degraded model performance. Instead, we ran both systems in parallel for six weeks, continuously comparing feature values and reconciling differences.
+
+This dual-write period was invaluable. It surfaced three significant bugs in our feature computation logic that we would have shipped to production otherwise.
+
+The migration was incremental: model by model, we shifted traffic from the batch system to the streaming system, monitoring metrics at each step.
+
+</Section>
+
+<Section label="Outcomes">
+
+<Metrics>
+  <Metric value="50k" label="Events / sec" />
+  <Metric value="<8ms" label="p99 Latency" />
+  <Metric value="0" label="Incidents (6mo)" />
+</Metrics>
+
+- Feature freshness improved from ~60 minutes to under 5 seconds
+- Model performance on time-sensitive predictions improved by 12%
+- On-call burden for the data engineering team reduced by 70%
+- System has processed over 40 billion events without data loss
+
+</Section>
